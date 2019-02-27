@@ -14,6 +14,6 @@ Colaboradores:
 
 [Fabiano Sousa](http://git.mateus/fabiano.maciel)
 
-[Thiago Feitosa](http://git.mateus/thiago.feitosa)
-
 [Ivo Lopes](http://git.mateus/ivo.lopes)
+
+[Thiago Feitosa](http://git.mateus/thiago.feitosa)
