@@ -1,0 +1,62 @@
+#FROM debian
+#RUN apt-get install libdw-dev
+#RUN mkdir -p /usr/local/apprun
+#CMD /usr/local/apprun/app/run.sh
+
+
+FROM debian:latest
+
+# docker build -t spedservice .
+
+# LIBS PRE-REQUISITOS
+RUN apt-get -y update && apt-get -y install libdw-dev \
+  libxcb-xinerama0-dev \
+  libgl1-mesa-dev \
+  libgl1-mesa-glx \
+  libglib2.0-0 \
+  libnss3-dev \
+#  unixodbc \
+#  unixodbc-dev \
+  freetds-dev \
+  freetds-bin \
+  tdsodbc \
+  postgresql-client \
+  sudo \
+  build-essential
+#  ubuntu-sdk \
+#  mcedit iputils-ping
+
+RUN apt install -y libxcomposite-dev libxcursor1 libxi6 libgconf-2-4 libxtst6 libfontconfig default-dbus-session-bus libxrandr2 libasound2 libegl1-mesa
+#tar openssh-server openssh-client curl
+
+RUN unlink /etc/localtime && ln -s /usr/share/zoneinfo/Etc/GMT+3 /etc/localtime
+
+RUN useradd -G root user
+
+COPY odbcinst.ini /etc/
+COPY odbc.ini /etc/
+
+# USUARIO
+RUN export uid=1000 gid=1000 && \
+    mkdir -p /home/user && \
+    echo "user:x:${uid}:${gid}:User,,,:/home/user:/bin/bash" >> /etc/passwd && \
+    echo "user:x:${uid}:" >> /etc/group && \
+    echo "user ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/user && \
+    chmod 0440 /etc/sudoers.d/user && \
+    chown ${uid}:${gid} -R /home/user
+
+USER user
+ENV HOME /home/user
+
+ENV DIR_PROJETO_QT app
+
+VOLUME ["/tmp/.X11-unix", "/tmp/.X11-unix"]
+
+ADD k8sRun.sh $HOME/k8sRun.sh
+
+ADD app $HOME/app/
+
+WORKDIR $HOME
+
+RUN mkdir /tmp/runtime-developer
+RUN chmod 0700 /tmp/runtime-developer

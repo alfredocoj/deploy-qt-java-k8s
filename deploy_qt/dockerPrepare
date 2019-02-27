@@ -1,0 +1,19 @@
+#!/bin/bash
+DockerFile="Dockerfile"
+DockerRun="dockerRun.sh"
+
+DockerBuildDir=$(pwd)/tmpDockerBuid
+
+rm -rf $DockerBuildDir;
+mkdir -p $DockerBuildDir;
+
+cp ./dockerfileTemplate $DockerBuildDir/$DockerFile
+cp ./$DockerRun $DockerBuildDir/$DockerRun
+
+cd $DockerBuildDir
+docker build . -t docker_qt
+cd ..
+rm -rf $DockerBuildDir;
+#rm -rf $DockerFile
+
+#docker run -v /opt/qt59:/usr/local/user/qtlibs/ -v /home/flavio/app:/usr/local/user/app -e PARAMS="" --name="debian_qt59" debian

@@ -1,0 +1,33 @@
+---
+
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: qt-libs
+  labels:
+    type: local
+spec:
+  storageClassName: slow
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: ${DockerQtLibs}
+
+---
+
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: qt-app
+  labels:
+    type: local
+spec:
+  storageClassName: slow
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: ${DockerAppLibs}

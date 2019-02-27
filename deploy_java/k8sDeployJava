@@ -1,0 +1,88 @@
+#!/bin/bash
+
+## release (PRO, HOM ou DEV)
+AppEnv=$1
+## Nome da aplicação
+AppName=$2
+## Nome imagem docker
+DockerImageNameLatest=$3
+
+## Diretorio base da aplicacao e release selecionados
+DockerAppDir=/usr/local/appjavaversion/release/$AppEnv/$AppName
+
+mkdir -p $DockerAppDir
+
+## Arquivo com o número da última versão da imagem docker para a release e aplicação selecionadas
+FileLastVersionDocker=$DockerAppDir/lastversiondocker.txt
+
+# busca a última versão no arquivo que mantem a última versão
+if [ -f $FileLastVersionDocker ]
+then
+    ## Número da última versão da imagem docker para a release e aplicação selecionadas
+    DockerImageVersionLatest=$(cat $DockerAppDir/lastversiondocker.txt)
+
+	echo -e $(($DockerImageVersionLatest +1)) > $FileLastVersionDocker
+
+	DockerImageVersionLatest=$(cat $DockerAppDir/lastversiondocker.txt);
+else
+    # se file lastversiondocker não existe para a aplicação, então é criado e setado valor 1
+    touch $FileLastVersionDocker
+	echo -e "1" > $FileLastVersionDocker
+	DockerImageVersionLatest=1
+fi
+
+## Nome da Image Docker para a release escolhida
+DockerImageName=java-$AppEnv-$AppName
+## Última versão da imagem docker a ser disponibilizada para a aplicação e release selecionadas
+DockerImage=192.168.6.184:5000/ithappens/$DockerImageName:$DockerImageVersionLatest
+## Arquivo com o template para deploy java em k8s
+K8sFileTemplate=/usr/local/appjavaversion/k8sTemplateJava.yaml
+## Arquivo com o template para deploy java em k8s
+K8sFileTemplateService=/usr/local/appjavaversion/k8sTemplateJavaService.yaml
+## Diretorio da versao docker atual para a aplicação e release selecionadas
+DockerDirVersion=$DockerAppDir/$DockerImageVersionLatest
+
+mkdir -p $DockerDirVersion
+
+## Arquivo yaml com a última versão de configurações de deploy para a release e aplicação selecionadas
+K8sFileApp=$DockerDirVersion/$AppName.yaml
+## Arquivo de deploy K8S da última versão da aplicação
+K8sFileAppService=$DockerDirVersion/$AppName-service.yaml
+## Número da Última versão da Imagem Docker da aplicação
+DockerImageVersion=$(cat $DockerAppDir/lastversiondocker.txt)
+## Arquivo que possui o número da última versão da Image Docker da aplicação e para a release selecionada
+FileLastVersionDocker=$DockerAppDir/lastversiondocker.txt
+## script para preparar o template yaml do deploy em k8s
+ScriptPrepareTemplateJava=/usr/local/appjavaversion/k8sPrepareTemplateJava.sh' '$AppEnv
+ScriptPrepareTemplateJava=$ScriptPrepareTemplateJava' '$AppName
+
+# PREPARE
+docker pull 192.168.6.184:5000/ithappens/$DockerImageNameLatest:latest
+
+# obtem o UUID da imagem
+IdImage=$(docker images -q 192.168.6.184:5000/ithappens/$DockerImageNameLatest:latest)
+
+# cria uma tag nova para a versão latest
+docker tag $IdImage 192.168.6.184:5000/ithappens/$DockerImageName:$DockerImageVersionLatest
+
+# sobe para o repositório de imagens docker do mateus
+docker push 192.168.6.184:5000/ithappens/$DockerImageName:$DockerImageVersionLatest
+
+eval "$ScriptPrepareTemplateJava"
+
+## DEPLOY
+
+declare -i DockerImageVersionNumber=$(($DockerImageVersion))
+
+if [ $DockerImageVersionNumber -eq 1 ]
+then
+    kubectl create -f $K8sFileApp --namespace=java-$AppEnv --record=true
+    kubectl create -f $K8sFileAppService --namespace=java-$AppEnv --record=true
+else
+	kubectl set image -f $K8sFileApp $AppName-container=$DockerImage --namespace=java-$AppEnv --record=true
+fi
+
+# verifica o status da aplicacao
+kubectl rollout status deployment/$AppName --namespace=java-$AppEnv
+
+echo "container started";
