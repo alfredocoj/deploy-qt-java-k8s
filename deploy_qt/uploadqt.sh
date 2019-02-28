@@ -32,12 +32,10 @@ shift $((OPTIND - 1))
 #configuracao do servidor
 BINARYEnv=$1
 BINARYApp=$2
-DockerAppParam=$3
-DockerAppPort=$4
 BINARYSERVER=192.168.6.95
 BINARYSERVERUSER=k8s-admin
 BINARYSERVERPASS=!coalizao
-BINARYBuildDir=/home/jenkins/build/docker
+BINARYBuildDir=/home/$(whoami)/build/docker
 BINARYBuildDirAPP=$BINARYBuildDir/$BINARYApp
 BINARYBuildDirAPPZip=$BINARYBuildDir/$BINARYApp.zip
 BINARYBuildDirAPPZipRemote=/usr/local/appversion/release/$BINARYEnv/$BINARYApp.zip
