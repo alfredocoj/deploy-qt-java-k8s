@@ -1,0 +1,6 @@
+port=9094
+param=job_computacao
+lastname=computacao
+cpus=2
+node=k8s\-node\-96
+replicas=2
