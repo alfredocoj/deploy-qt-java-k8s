@@ -80,8 +80,8 @@ then
     echo "Arquivo com o número da última versão docker em release já existe";
 else
     touch $FileLastVersionDocker
-	echo -e "1" > $FileLastVersionDocker
-	DockerImageVersionLatest=1
+	echo -e "0" > $FileLastVersionDocker
+	DockerImageVersionLatest=0
 fi
 
 cd ..;
@@ -99,7 +99,28 @@ eval "$BINARYK8sPrepare"
 echo "Iniciando container em kubernetes ..."
 BINARYK8sQtStart='./k8sQt59start.sh '$BINARYEnv
 BINARYK8sQtStart=$BINARYK8sQtStart' '$BINARYApp
+#BINARYK8sQtStart=$BINARYK8sQtStart' '$DockerAppParam
+#BINARYK8sQtStart=$BINARYK8sQtStart' '$DockerAppPort
 echo "$BINARYK8sQtStart"
 eval "$BINARYK8sQtStart"
 
-rm -rf ./$AppVersionDirAppZip
+
+
+## SCRIPTS DE EXECUCAO:
+#echo "Inciando a preracao da imagem docker ..."
+#exec /usr/local/appversion/k8sPrepare.sh' '$BINARYEnv' '$BINARYApp
+#echo "Imagem docker preparada..."
+
+#echo "Inciando a aplicacao com kubernetes ..."
+#exec /usr/local/appversion/k8sQt59start.sh' '$BINARYEnv' '$BINARYApp' '$DockerAppParam' '$DockerAppPort
+#echo "Finalizando a aplicacao com kubernetes ..."
+
+#export cmd=" $BinaryK8sPrepare";
+#echo "Preparando a imagem docker ..."
+#sshpass -p "$BINARYSERVERPASS" ssh $BINARYSERVERUSER@$BINARYSERVER eval '$cmd';
+#
+#export cmd=" $BinaryK8sQt59start";
+#echo "Iniciando as imagens docker ..."
+#sshpass -p "$BINARYSERVERPASS" ssh $BINARYSERVERUSER@$BINARYSERVER eval '$cmd';
+
+#rm -rf ./$AppVersionDirAppZip
