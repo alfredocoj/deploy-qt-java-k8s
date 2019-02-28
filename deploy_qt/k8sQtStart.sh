@@ -15,9 +15,9 @@ DockerAppVersion=$(cat $DockerAppDir/lastversion.txt)
 ## Dir da última aplicação
 DockerAppLibs=$DockerAppDir/$DockerAppVersion
 ## Nome da aplicação docker
-DockerName="$DockerAppName"_"$DockerAppParam"
+##DockerName="$DockerAppName"_"$DockerAppParam"
 ## Arquivo de configuracao da aplicacao
-DockerAppConfigRun=$DockerAppDir/"$DockerAppParam".ini
+##DockerAppConfigRun=$DockerAppDir/"$DockerAppParam".ini
 ## Arquivo com o Template de configuracao base para deploy K8S
 K8sFile=/usr/local/appversion/k8sTemplateQt.yaml
 ## Arquivo com o template para deploy java em k8s
@@ -28,26 +28,33 @@ K8sFileApp=$DockerAppDir/$DockerAppVersion/$DockerAppName.yaml
 K8sFileAppService=$DockerAppDir/$DockerAppVersion/$DockerAppName-service.yaml
 ## Número da Última versão da Imagem Docker da aplicação
 DockerImageVersion=$(cat $DockerAppDir/lastversiondocker.txt)
-## Nome da Image Docker para a release escolhida
-DockerImageName=qt-$DockerAppEnvi-$DockerAppName
-## Imagem docker para a última versao da aplicação
-DockerImage=192.168.6.184:5000/ithappens/$DockerImageName:$DockerImageVersion
-## Imagem docker base para a última versao da aplicação
-DockerImageBase=192.168.6.184:5000/ithappens/$DockerImageName
 ## Arquivo que possui o número da última versão da Image Docker da aplicação e para a release selecionada
 FileLastVersionDocker=$DockerAppDir/lastversiondocker.txt
 ## Arquivo com o número a versão alterior a última versão da imagem docker da aplicação e para a release selecionada
 FileOldVersionDocker=/usr/local/appversion/release/$DockerAppEnvi/$DockerAppName/$DockerAppVersion/appOldVersionDocker.txt
 ## Arquivo com as configurações da aplicação e release selecionada (porta, cpus, memoria, etc.)
 FileConfig=$DockerAppDir/app.conf
-## Nome do container
-containerName=$DockerAppName-container
+
 
 # LENDO ARQUIVO DE CONFIGURACAO DA APLICAÇÃO
 DockerAppParam=`more $FileConfig | grep param | awk -F= '{print $2}'`
+LastNameApp=`more $FileConfig | grep lastname | awk -F= '{print $2}'`
 declare -i DockerAppPort=`more $FileConfig | grep port | awk -F= '{print $2}'`
 DockerAppMaxCore=`more $FileConfig | grep cpus | awk -F= '{print $2}'`
+Node=`more $FileConfig | grep node | awk -F= '{print $2}'`
+declare -i NumReplicas=`more $FileConfig | grep replicas | awk -F= '{print $2}'`
 declare -i DockerAppHostPort=300${DockerAppPort: -2}
+
+## Nome da Image Docker para a release escolhida
+ImageNameDocker=${DockerAppName,,}
+K8sAppName=${DockerAppName,,}-${LastNameApp,,}
+DockerImageName="qt-$DockerAppEnvi-$ImageNameDocker"
+## Imagem docker para a última versao da aplicação
+DockerImage=192.168.6.184:5000/ithappens/$DockerImageName:$DockerImageVersion
+## Imagem docker base para a última versao da aplicação
+DockerImageBase=192.168.6.184:5000/ithappens/$DockerImageName
+## Nome do container
+containerName=$ImageNameDocker-container
 
 #DockerAppParam=$4
 #declare -i  DockerAppPort=$5
@@ -71,7 +78,7 @@ echo "montando deploy file ..."
 
 ### setando parametro refetente ao nome da aplicação
 
-paramSed="s/\${DockerAppName}/"$DockerAppName"/g"
+paramSed="s/\${K8sAppName}/"$K8sAppName"/g"
 
 echo $paramSed
 
@@ -83,6 +90,26 @@ sed -i $paramSed $K8sFileAppService
 ### setando parametro refetente ao número de cores para a aplicação
 
 paramSed="s/\${DockerAppMaxCore}/"$DockerAppMaxCore"/g"
+
+echo $paramSed
+
+sed -i $paramSed $K8sFileApp
+
+########################################################################################################################
+
+### setando parametro refetente ao número de replicaspara a aplicação
+
+paramSed="s/\${NumReplicas}/"$NumReplicas"/g"
+
+echo $paramSed
+
+sed -i $paramSed $K8sFileApp
+
+########################################################################################################################
+
+### setando parametro refetente ao Node Agent de replicaspara a aplicação
+
+paramSed="s/\${Node}/"$Node"/g"
 
 echo $paramSed
 
@@ -144,18 +171,19 @@ sed -i $paramSed $K8sFileApp
 
 # verificacao para criar ou atualizar o deploy
 
-declare -i DockerImageVersionNumber=$(($DockerImageVersion - 1))
+declare -i DockerImageVersionNumber=$(($DockerImageVersion))
 
 if [ $DockerImageVersionNumber -eq 1 ]
 then
+    echo "Version Docker: $DockerImageVersionNumber"
     kubectl create -f $K8sFileApp --namespace=qt-$DockerAppEnvi --record=true
     kubectl create -f $K8sFileAppService --namespace=qt-$DockerAppEnvi --record=true
 else
-	kubectl set image -f $K8sFileApp $DockerAppName-container=$DockerImage --namespace=qt-$DockerAppEnvi --record=true
+	kubectl set image -f $K8sFileApp $ImageNameDocker-container=$DockerImage --namespace=qt-$DockerAppEnvi --record=true
 fi
 
 # verifica o status da aplicacao
-kubectl rollout status deployment/$DockerAppName --namespace=qt-$DockerAppEnvi
-# kubectl rollout undo deployment/$DockerAppName --namespace=qt-$DockerAppEnvi --revision 42
+kubectl rollout status deployment/$K8sAppName --namespace=qt-$DockerAppEnvi
+# kubectl rollout undo deployment/$K8sAppName --namespace=qt-$DockerAppEnvi --revision 42
 
 echo "container started on K8s";

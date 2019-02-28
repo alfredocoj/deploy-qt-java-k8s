@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: ${DockerAppName}-service
+  name: ${K8sAppName}-service
 spec:
   type: NodePort
   ports:
     - port: ${DockerAppPort}
       nodePort: ${DockerAppHostPort}
   selector:
-    app: ${DockerAppName}
+    app: ${K8sAppName}

@@ -51,19 +51,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ${DockerAppName}
+  name: ${K8sAppName}
 spec:
   selector:
     matchLabels:
-      app: ${DockerAppName}
-  replicas: 2
+      app: ${K8sAppName}
+  replicas: ${NumReplicas}
   template:
     metadata:
       labels:
-        app: ${DockerAppName}
+        app: ${K8sAppName}
     spec:
       containers:
-        - name: ${DockerAppName}-container
+        - name: ${K8sAppName}-container
           image: ${DockerImage}
           command: [ "/bin/bash", "-ce", "sh /home/user/k8sRun.sh" ]
           volumeMounts:
@@ -87,9 +87,9 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: ${DockerAppPort}
-      terminationGracePeriodSeconds: 130
+      terminationGracePeriodSeconds: 60
       nodeSelector:
-        kubernetes.io/hostname: k8s-node-97
+        kubernetes.io/hostname: ${Node}
       imagePullSecrets:
         - name: registrypullsecret
       volumes:
@@ -117,11 +117,11 @@ spec:
 #apiVersion: v1
 #kind: Service
 #metadata:
-#  name: ${DockerAppName}-service
+#  name: ${K8sAppName}-service
 #spec:
 #  type: NodePort
 #  ports:
 #    - port: ${DockerAppPort}
 #      nodePort: ${DockerAppHostPort}
 #  selector:
-#    app: ${DockerAppName}
+#    app: ${K8sAppName}
