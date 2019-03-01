@@ -43,6 +43,10 @@ fi
 
 FileConfig=$DockerAppDir/conf/$ConfigName.conf
 
+if [ ! -f $FileConfig ]
+then
+    FileConfig=$DockerAppDir/conf/app.conf
+fi
 
 # LENDO ARQUIVO DE CONFIGURACAO DA APLICAÇÃO
 DockerAppParam=`more $FileConfig | grep param | awk -F= '{print $2}'`
