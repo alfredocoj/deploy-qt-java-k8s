@@ -32,17 +32,19 @@ shift $((OPTIND - 1))
 #configuracao do servidor
 BINARYEnv=$1
 BINARYApp=$2
+LastName=$3
 BINARYSERVER=192.168.6.95
 BINARYSERVERUSER=k8s-admin
 BINARYSERVERPASS=!coalizao
 BINARYBuildDir=/home/$(whoami)/build/docker
-BINARYBuildDirAPP=$BINARYBuildDir/$BINARYApp
-BINARYBuildDirAPPZip=$BINARYBuildDir/$BINARYApp.zip
-BINARYBuildDirAPPZipRemote=/usr/local/appversion/release/$BINARYEnv/$BINARYApp.zip
+BINARYBuildDirAPP=$BINARYBuildDir/$BINARYApp$LastName
+BINARYBuildDirAPPZip=$BINARYBuildDir/$BINARYApp$LastName.zip
+BINARYBuildDirAPPZipRemote=/usr/local/appversion/release/$BINARYEnv/$BINARYApp$LastName.zip
 BINARYBuildDirAPPBin=$BINARYBuildDirAPP/$BINARYApp
 BINARYBuildDirAPPBinApp=$BINARYBuildDirAPP/$BINARYApp
 BINARYInstallApp='/usr/local/appversion/installqt '$BINARYEnv
 BINARYInstallApp=$BINARYInstallApp' '$BINARYApp
+BINARYInstallApp=$BINARYInstallApp' '$LastName
 #BINARYInstallApp=$BINARYInstallApp' '$DockerAppParam
 #BINARYInstallApp=$BINARYInstallApp' '$DockerAppPort
 # SCRIPT DE LOGS

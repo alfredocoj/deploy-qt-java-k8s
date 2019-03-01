@@ -4,12 +4,13 @@
 DockerAppEnv=$1
 ## Nome da aplicação selecionada
 DockerAppName=$2
+LastName=$3
 ## Nome do arquivo Dockerfile
 DockerFile="Dockerfile"
 ## Nome do script para start da aplicação
 k8sRun="k8sRun.sh"
 ## Dir base da aplicação e release selecionadas
-DockerAppDir=/usr/local/appversion/release/$DockerAppEnv/$DockerAppName
+DockerAppDir=/usr/local/appversion/release/$DockerAppEnv/$DockerAppName$LastName
 ## Nome da pasta com a última versão da aplicação e release selecionadas
 DockerAppVersion=$(cat $DockerAppDir/lastversion.txt)
 ## Número da última versão da imagem docker para a aplicação e release selecionadas

@@ -6,10 +6,12 @@ DockerQtVersion=$1
 DockerAppEnvi=$2
 ## Nome da aplicação
 DockerAppName=$3
+LastName=$4
+ConfigName=$LastName
 ## Dir das Libs do Qt escolhida
 DockerQtLibs=/usr/local/appversion/qtlibs/$DockerQtVersion
 ## Dir base do App
-DockerAppDir=/usr/local/appversion/release/$DockerAppEnvi/$DockerAppName
+DockerAppDir=/usr/local/appversion/release/$DockerAppEnvi/$DockerAppName$LastName
 ## Nome da pasta Última versao da aplicação
 DockerAppVersion=$(cat $DockerAppDir/lastversion.txt)
 ## Dir da última aplicação
@@ -31,9 +33,15 @@ DockerImageVersion=$(cat $DockerAppDir/lastversiondocker.txt)
 ## Arquivo que possui o número da última versão da Image Docker da aplicação e para a release selecionada
 FileLastVersionDocker=$DockerAppDir/lastversiondocker.txt
 ## Arquivo com o número a versão alterior a última versão da imagem docker da aplicação e para a release selecionada
-FileOldVersionDocker=/usr/local/appversion/release/$DockerAppEnvi/$DockerAppName/$DockerAppVersion/appOldVersionDocker.txt
+FileOldVersionDocker=$DockerAppDir/$DockerAppVersion/appOldVersionDocker.txt
 ## Arquivo com as configurações da aplicação e release selecionada (porta, cpus, memoria, etc.)
-FileConfig=$DockerAppDir/app.conf
+
+if [[ -z "$4" ]]
+then
+    ConfigName=app
+fi
+
+FileConfig=$DockerAppDir/conf/$ConfigName.conf
 
 
 # LENDO ARQUIVO DE CONFIGURACAO DA APLICAÇÃO
@@ -179,7 +187,7 @@ then
     kubectl create -f $K8sFileApp --namespace=qt-$DockerAppEnvi --record=true
     kubectl create -f $K8sFileAppService --namespace=qt-$DockerAppEnvi --record=true
 else
-	kubectl set image -f $K8sFileApp $ImageNameDocker-container=$DockerImage --namespace=qt-$DockerAppEnvi --record=true
+	kubectl set image -f $K8sFileApp $K8sAppName-container=$DockerImage --namespace=qt-$DockerAppEnvi --record=true
 fi
 
 # verifica o status da aplicacao
