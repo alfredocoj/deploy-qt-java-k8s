@@ -40,6 +40,8 @@ DockerImage=192.168.6.184:5000/ithappens/$DockerImageName:$DockerImageVersionLat
 mkdir -p $DirDocker
 mkdir -p $DirAppLast
 
+rm -f $DirAppLast/gmcore_db.ini
+rm -f $DirAppLast/app.ini
 cp $FileAppIni $DirAppLast/gmcore_db.ini
 cp $FileAppIni $DirAppLast/app.ini
 cp -R $DirAppReleaseVersion/* $DirAppLast/
