@@ -73,7 +73,7 @@ done
 
 if [ -f ../lastversion.txt ]
 then
-    ln -s ../app.ini app.ini
+    #ln -s ../app.ini app.ini
 	cp ../lastversion.txt ./appOldVerion.txt
 fi
 
