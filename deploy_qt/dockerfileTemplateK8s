@@ -29,7 +29,8 @@ RUN apt-get -y update && apt-get -y install libdw-dev \
 RUN apt install -y libxcomposite-dev libxcursor1 libxi6 libgconf-2-4 libxtst6 libfontconfig default-dbus-session-bus libxrandr2 libasound2 libegl1-mesa
 #tar openssh-server openssh-client curl
 
-RUN unlink /etc/localtime && ln -s /usr/share/zoneinfo/Etc/GMT+3 /etc/localtime
+RUN unlink /etc/localtime
+RUN ln -s /usr/share/zoneinfo/America/Fortaleza /etc/localtime
 
 RUN useradd -G root user
 
