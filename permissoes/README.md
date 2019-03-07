@@ -12,3 +12,7 @@ Aqui são encontrados os scripts para criação de usuários para determinados p
 [Doc Official - Service account tokens](https://kubernetes.io/docs/reference/access-authn-authz/authentication/#service-account-tokens)
 
 [Doc Official - Service account](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#service-account-permissions)
+
+[Documentação oficial - Controle de acesso](https://github.com/kubernetes/dashboard/wiki/Access-control)
+
+[Securança em dashboard K8s](https://blog.heptio.com/on-securing-the-kubernetes-dashboard-16b09b1b7aca)
