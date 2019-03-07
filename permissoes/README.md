@@ -16,3 +16,5 @@ Aqui são encontrados os scripts para criação de usuários para determinados p
 [Documentação oficial - Controle de acesso](https://github.com/kubernetes/dashboard/wiki/Access-control)
 
 [Securança em dashboard K8s](https://blog.heptio.com/on-securing-the-kubernetes-dashboard-16b09b1b7aca)
+
+[Documentação oficial - Criando usuário de exemplo](https://github.com/kubernetes/dashboard/wiki/Creating-sample-user)
