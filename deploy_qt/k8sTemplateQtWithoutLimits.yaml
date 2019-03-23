@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ${K8sAppName}
+spec:
+  selector:
+    matchLabels:
+      app: ${K8sAppName}
+  replicas: ${NumReplicas}
+  template:
+    metadata:
+      labels:
+        app: ${K8sAppName}
+    spec:
+      containers:
+        - name: ${K8sAppName}-container
+          image: ${DockerImage}
+          command: [ "/bin/bash", "-ce", "sh /home/user/k8sRun.sh" ]
+          volumeMounts:
+            - mountPath: /tmp/.X11-unix
+              name: x11-volume
+            - mountPath: /home/user/qtlibs
+              name: qt-libs
+          #            - mountPath: /home/user/app
+          #              name: qt-app
+          env:
+            - name: DISPLAY
+            - name: QT_QPA_PLATFORM
+              value: minimal
+            - name: XDG_RUNTIME_DIR
+              value: /tmp/runtime-developer
+            - name: DockerAppParam
+              value: ${DockerAppParam}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: ${DockerAppPort}
+      terminationGracePeriodSeconds: 60
+      nodeSelector:
+        kubernetes.io/hostname: ${Node}
+      imagePullSecrets:
+        - name: registrypullsecret
+      volumes:
+        - name: x11-volume
+          hostPath:
+            #directory location on host
+            path: /tmp/.X11-unix
+            #this field is optional
+            #type: Directory
+        - name: qt-libs
+          hostPath:
+            #directory location on host
+            path: ${DockerQtLibs}
+            #this field is optional
+            #type: Directory
+#        - name: qt-app
+#          hostPath:
+#             #directory location on host
+#            path: ${DockerAppLibs}
+#             #this field is optional
+#            #type: Directory
+
+#---
+#
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: ${K8sAppName}-service
+#spec:
+#  type: NodePort
+#  ports:
+#    - port: ${DockerAppPort}
+#      nodePort: ${DockerAppHostPort}
+#  selector:
+#    app: ${K8sAppName}
