@@ -3,5 +3,5 @@ kind: ServiceAccount
 metadata:
   name: reader-user
   namespace: qt-pro
-# kubectl create serviceaccount reader-user -n qt-pro
-# kubectl create rolebinding reader-user -n qt-pro --clusterrole=view --serviceaccount=qt-prod:reader-user
+# kubectl create serviceaccount reader-user-qt-pro -n qt-pro
+# kubectl create rolebinding reader-user-qt-pro -n qt-pro --clusterrole=view --serviceaccount=qt-pro:reader-user-qt-pro
