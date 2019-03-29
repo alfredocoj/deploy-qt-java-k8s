@@ -33,6 +33,7 @@ shift $((OPTIND - 1))
 BINARYEnv=$1
 BINARYApp=$2
 LastName=$3
+restart=$4
 BINARYSERVER=192.168.6.95
 BINARYSERVERUSER=k8s-admin
 BINARYSERVERPASS=!coalizao
@@ -42,9 +43,10 @@ BINARYBuildDirAPPZip=$BINARYBuildDir/$BINARYApp$LastName.zip
 BINARYBuildDirAPPZipRemote=/usr/local/appversion/release/$BINARYEnv/$BINARYApp$LastName.zip
 BINARYBuildDirAPPBin=$BINARYBuildDirAPP/$BINARYApp
 BINARYBuildDirAPPBinApp=$BINARYBuildDirAPP/$BINARYApp
-BINARYInstallApp='/usr/local/appversion/installqt '$BINARYEnv
+BINARYInstallApp='/usr/local/appversion/installqtteste '$BINARYEnv
 BINARYInstallApp=$BINARYInstallApp' '$BINARYApp
 BINARYInstallApp=$BINARYInstallApp' '$LastName
+BINARYInstallApp=$BINARYInstallApp' '$restart
 #BINARYInstallApp=$BINARYInstallApp' '$DockerAppParam
 #BINARYInstallApp=$BINARYInstallApp' '$DockerAppPort
 # SCRIPT DE LOGS
