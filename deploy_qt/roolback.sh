@@ -9,5 +9,5 @@ lastName=$3
 
 K8sAppName=${mainName,,}-${lastName,,}
 
-ssh k8s-admin@192.168.6.95 eval 'kubectl rollout undo deployment/$K8sAppName --namespace=qt-$env'
-ssh k8s-admin@192.168.6.95 eval 'kubectl rollout status deployment/$K8sAppName --namespace=qt-$env'
+ssh k8s-admin@192.168.6.95 eval "kubectl rollout undo deployment/$K8sAppName --namespace=qt-$env"
+ssh k8s-admin@192.168.6.95 eval "kubectl rollout status deployment/$K8sAppName --namespace=qt-$env"
