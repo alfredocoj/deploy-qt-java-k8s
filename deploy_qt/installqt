@@ -3,6 +3,7 @@
 BINARYEnv=$1
 BINARYApp=$2
 LastName=$3
+restart=$4
 ConfigName=$LastName
 #DockerAppParam=$3
 #declare -i DockerAppPort=$4
@@ -82,7 +83,7 @@ if [ -f $FileLastVersionDocker ]
 then
     echo "Arquivo com o número da última versão docker em release já existe";
 
-    if [ "$4" == "restart" ];
+    if [ "$restart" == "restart" ];
     then
         touch $FileLastVersionDocker
 	    echo -e "0" > $FileLastVersionDocker

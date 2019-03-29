@@ -34,6 +34,12 @@ BINARYEnv=$1
 BINARYApp=$2
 LastName=$3
 restart=$4
+## verifica se terceiro parametro é igual a restart
+if [ "$3" == "restart" ];
+then
+    LastName=""
+    restart=$3
+fi
 BINARYSERVER=192.168.6.95
 BINARYSERVERUSER=k8s-admin
 BINARYSERVERPASS=!coalizao
