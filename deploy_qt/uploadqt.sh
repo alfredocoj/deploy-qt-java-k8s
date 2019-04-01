@@ -1,45 +1,56 @@
 #!/bin/bash
 
-
-usage="$(basename "$0") [-h] [k] [-s n] -- script for upload QT development environment of It Happens (Grupo Mateus).
-
-where:
-    -h  show this help text
-    -k  create key ssh
-    -s  set the seed value (default: 142)"
-
-seed=142
-
-while getopts ':hks:' option; do
-  case "$option" in
-    h) echo "$usage"
-       exit
-       ;;
-    s) seed=$OPTARG
-       ;;
-    :) printf "missing argument for -%s\n" "$OPTARG" >&2
-       echo "$usage" >&2
-       exit 1
-       ;;
-   \?) printf "illegal option: -%s\n" "$OPTARG" >&2
-       echo "$usage" >&2
-       exit 1
-       ;;
-  esac
-done
-shift $((OPTIND - 1))
-
 #configuracao do servidor
 BINARYEnv=$1
 BINARYApp=$2
 LastName=$3
-restart=$4
-## verifica se terceiro parametro é igual a restart
+extraParam=$4
+
+## verifica se terceiro parametro é igual a "restart", "roolback" ou "status"
 if [ "$3" == "restart" ];
 then
     LastName=""
-    restart=$3
+    extraParam=$3
+elif [ "$3" == "roolback" ]; then
+    LastName=""
+    extraParam=$3
+elif [ "$3" == "status" ]; then
+    LastName=""
+    extraParam=$3
+elif [ "$3" == "stop" ]; then
+    LastName=""
+    extraParam=$3
 fi
+
+while :
+do
+  case $extraParam in
+	restart)
+		echo "reiniciando aplicação..."
+		break
+		;;
+	status)
+		echo "Status da aplicação..."
+		/usr/local/appversion/status.sh $BINARYEnv $BINARYApp $LastName
+		exit 0
+		;;
+	stop)
+		echo "Stop da aplicação..."
+		/usr/local/appversion/stop.sh $BINARYEnv $BINARYApp $LastName
+		exit 0
+		;;
+	roolback)
+		echo "Roolback da aplicação..."
+		/usr/local/appversion/roolback.sh  $BINARYEnv $BINARYApp $LastName
+		exit 0
+		;;
+	*)
+		echo "Iniciando deploy ..."
+		break
+		;;
+  esac
+done
+
 BINARYSERVER=192.168.6.95
 BINARYSERVERUSER=k8s-admin
 BINARYSERVERPASS=!coalizao
@@ -49,29 +60,10 @@ BINARYBuildDirAPPZip=$BINARYBuildDir/$BINARYApp$LastName.zip
 BINARYBuildDirAPPZipRemote=/usr/local/appversion/release/$BINARYEnv/$BINARYApp$LastName.zip
 BINARYBuildDirAPPBin=$BINARYBuildDirAPP/$BINARYApp
 BINARYBuildDirAPPBinApp=$BINARYBuildDirAPP/$BINARYApp
-BINARYInstallApp='/usr/local/appversion/installqtteste '$BINARYEnv
+BINARYInstallApp='/usr/local/appversion/installqt '$BINARYEnv
 BINARYInstallApp=$BINARYInstallApp' '$BINARYApp
 BINARYInstallApp=$BINARYInstallApp' '$LastName
-BINARYInstallApp=$BINARYInstallApp' '$restart
-#BINARYInstallApp=$BINARYInstallApp' '$DockerAppParam
-#BINARYInstallApp=$BINARYInstallApp' '$DockerAppPort
-# SCRIPT DE LOGS
-#IP="127.0.0.1"
-##IP=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1' | grep -v '172.*'`
-#LOG="IP: $IP - usuario: $(whoami) - data/hora: $(date +"%Y%m%d/%H%M%S")"
-#LogsDIR="/usr/local/appversion/release/$BINARYEnv/$BINARYApp/logs"
-#LogFilePath="$LogsDIR/$BINARYApp_logs_$(date +'%Y%m%d').log"
-#CommandWriteLog="echo '$LOG' >> $LogFilePath"
-#
-### verifica se pasta de logs não existe.
-#if ! ssh $BINARYSERVERUSER@$BINARYSERVER stat $LogsDIR \> /dev/null 2\>\&1
-#then
-#    # cria a pasta de logs
-#	ssh $BINARYSERVERUSER@$BINARYSERVER eval "mkdir $LogsDIR"
-#
-#fi
-
-#BINARYInstallApp=pwd
+BINARYInstallApp=$BINARYInstallApp' '$extraParam
 
 if [ "$BINARYEnv" == "pro" ]; then
 	AppVersionDirEnv=$AppVersionDir/pro
@@ -104,15 +96,9 @@ else
 	mkdir -p $BINARYBuildDirAPP;
 fi
 
-#printf "docker build dir: %s\n" $BINARYBuildDir;
-#printf "docker lib dir: %s\n" $BINARYBuildDirAPP;
-#printf "docker app path: %s\n" $BINARYBuildDirAPPBin;
-#printf "\n";
-#printf "Log:Remove +x\n\r"
+
 find -iname '*.so' -exec chmod -x {} \;
-#printf "Log:Copy App.libs: %s\n\r " $BINARYBuildDirAPP
 find -iname '*.so' -exec cp {} $BINARYBuildDirAPP \;
-#printf "Log:Copy App: %s\n\r " $BINARYBuildDirAPP
 find -executable -type f -exec cp {} $BINARYBuildDirAPP \;
 
 if ! [ -f $BINARYBuildDirAPPBin ]
