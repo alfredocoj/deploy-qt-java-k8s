@@ -22,6 +22,7 @@ DockerAppLibs=$DockerAppDir/$DockerAppVersion
 ##DockerAppConfigRun=$DockerAppDir/"$DockerAppParam".ini
 ## Arquivo com o Template de configuracao base para deploy K8S
 K8sFile=/usr/local/appversion/k8sTemplateQt.yaml
+K8sFileWithoutLimits=/usr/local/appversion/k8sTemplateQtWithoutLimits.yaml
 ## Arquivo com o template para deploy java em k8s
 K8sFileTemplateService=/usr/local/appversion/k8sTemplateQtService.yaml
 ## Arquivo de deploy K8S da última versão da aplicação
@@ -78,6 +79,10 @@ rm -rf $DockerAppLibs/*.ini;
 echo "docker starting";
 echo "docker CPU : " $DockerAppMaxCore
 
+if [ "$DockerAppMaxCore" -eq "0" ]
+then
+    K8sFile=$K8sFileWithoutLimits
+fi
 
 echo "copiando: cp $K8sFile $K8sFileApp ..."
 
