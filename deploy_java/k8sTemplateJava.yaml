@@ -34,7 +34,7 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: ${DockerAppPort}
-      terminationGracePeriodSeconds: 130
+      terminationGracePeriodSeconds: 230
       nodeSelector:
         kubernetes.io/hostname: k8s-node-97
       imagePullSecrets:
