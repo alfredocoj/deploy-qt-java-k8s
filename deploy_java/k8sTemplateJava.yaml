@@ -7,6 +7,11 @@ spec:
     matchLabels:
       app: ${AppName}
   replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
   template:
     metadata:
       labels:
@@ -34,22 +39,15 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: ${DockerAppPort}
-      terminationGracePeriodSeconds: 230
+          readinessProbe:
+          httpGet:
+            path: ${URL_TESTE}
+            port: ${DockerAppPort}
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          successThreshold: 1
+      terminationGracePeriodSeconds: 140
       nodeSelector:
         kubernetes.io/hostname: k8s-node-97
       imagePullSecrets:
         - name: registrypullsecret
-
-#---
-#
-#apiVersion: v1
-#kind: Service
-#metadata:
-#  name: ${AppName}-service
-#spec:
-#  type: NodePort
-#  ports:
-#    - port: ${DockerAppPort}
-#      nodePort: ${DockerAppHostPort}
-#  selector:
-#    app: ${AppName}
