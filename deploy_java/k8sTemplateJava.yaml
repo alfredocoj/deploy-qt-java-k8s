@@ -40,12 +40,12 @@ spec:
           ports:
             - containerPort: ${DockerAppPort}
           readinessProbe:
-          httpGet:
-            path: ${URL_TESTE}
-            port: ${DockerAppPort}
-          initialDelaySeconds: 5
-          periodSeconds: 5
-          successThreshold: 1
+            httpGet:
+              path: ${URL_TESTE}
+              port: ${DockerAppPort}
+            initialDelaySeconds: 60
+            periodSeconds: 5
+            successThreshold: 1
       terminationGracePeriodSeconds: 140
       nodeSelector:
         kubernetes.io/hostname: k8s-node-97
