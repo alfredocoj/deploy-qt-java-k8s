@@ -31,6 +31,7 @@ EUREKASERVER_URI=`more $FileConfig | grep EUREKASERVER_URI | awk -F= '{print $2}
 HOST_NAME=`more $FileConfig | grep HOST_NAME | awk -F= '{print $2}'`
 PROFILE=`more $FileConfig | grep PROFILE | awk -F= '{print $2}'`
 SERVER_PORT=`more $FileConfig | grep SERVER_PORT | awk -F= '{print $2}'`
+URL_TESTE=`more $FileConfig | grep URL_TESTE | awk -F= '{print $2}'`
 
 
 echo "copiando: cp $K8sFile $K8sFileApp ..."
@@ -125,6 +126,13 @@ sed -i $paramSed $K8sFileApp
 ########################################################################################################################
 
 paramSed="s/\${DockerAppMaxCore}/"$DockerAppMaxCore"/g"
+
+echo $paramSed
+
+sed -i $paramSed $K8sFileApp
+########################################################################################################################
+
+paramSed="s/\${URL_TESTE}/"$URL_TESTE"/g"
 
 echo $paramSed
 
