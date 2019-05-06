@@ -17,3 +17,8 @@ Colaboradores:
 [Ivo Lopes](http://git.mateus/ivo.lopes)
 
 [Thiago Feitosa](http://git.mateus/thiago.feitosa)
+
+
+## Referências
+
+http://rahmonov.me/posts/zero-downtime-deployment-with-kubernetes/
