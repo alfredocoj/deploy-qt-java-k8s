@@ -15,6 +15,10 @@ spec:
       containers:
         - name: ${K8sAppName}-container
           image: ${DockerImage}
+          args:
+          - /bin/sh
+          - -c
+          - touch /tmp/healthy; sleep 30; rm -rf /tmp/healthy; sleep 600
           command: [ "/bin/bash", "-ce", "sh /home/user/k8sRun.sh" ]
           volumeMounts:
             - mountPath: /tmp/.X11-unix
@@ -37,6 +41,13 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: ${DockerAppPort}
+          readinessProbe:
+            exec:
+              command:
+              - cat
+              - /tmp/healthy
+            initialDelaySeconds: 60
+            periodSeconds: 5
       terminationGracePeriodSeconds: 60
       nodeSelector:
         kubernetes.io/hostname: ${Node}
@@ -62,16 +73,3 @@ spec:
 #             #this field is optional
 #            #type: Directory
 
-#---
-#
-#apiVersion: v1
-#kind: Service
-#metadata:
-#  name: ${K8sAppName}-service
-#spec:
-#  type: NodePort
-#  ports:
-#    - port: ${DockerAppPort}
-#      nodePort: ${DockerAppHostPort}
-#  selector:
-#    app: ${K8sAppName}
