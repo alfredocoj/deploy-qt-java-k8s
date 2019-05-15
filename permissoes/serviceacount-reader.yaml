@@ -8,3 +8,8 @@ metadata:
 # kubectl create serviceaccount reader-user-java-pro -n java-pro
 # kubectl create rolebinding reader-user-java-pro -n java-pro --clusterrole=view --serviceaccount=java-pro:reader-user-java-pro
 # kubectl get secret $(kubectl get serviceaccount reader-user-java-pro -n java-pro -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" -n java-pro | base64 --decode
+
+# kubectl create serviceaccount reader-user-java-hom -n java-hom
+# kubectl create rolebinding reader-user-java-hom -n java-hom --clusterrole=view --serviceaccount=java-hom:reader-user-java-hom
+# kubectl get secret $(kubectl get serviceaccount reader-user-java-hom -n java-hom -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" -n java-hom | base64 --decode
+
