@@ -19,7 +19,8 @@ K8sFileAppService=$AppDir/$DockerImageVersionLatest/$AppName-service.yaml
 ## Nome da Image Docker para a release escolhida
 DockerImageName=java-$AppEnv-$AppName
 ## Imagem docker para a última versao da aplicação
-DockerImage=192.168.6.184:5000/ithappens/$DockerImageName:$DockerImageVersionLatest
+#DockerImage=192.168.6.184:5000/ithappens/$DockerImageName:$DockerImageVersionLatest
+DockerImage=10.121.2.211:5001/ithappens/$DockerImageName:$DockerImageVersionLatest
 
 # LENDO ARQUIVO DE CONFIGURACAO
 declare -i DockerAppPort=`more $FileConfig | grep SERVER_PORT | awk -F= '{print $2}'`
@@ -32,7 +33,7 @@ HOST_NAME=`more $FileConfig | grep HOST_NAME | awk -F= '{print $2}'`
 PROFILE=`more $FileConfig | grep PROFILE | awk -F= '{print $2}'`
 SERVER_PORT=`more $FileConfig | grep SERVER_PORT | awk -F= '{print $2}'`
 URL_TESTE=`more $FileConfig | grep URL_TESTE | awk -F= '{print $2}'`
-
+REPLICAS=`more $FileConfig | grep REPLICAS | awk -F= '{print $2}'`
 
 echo "copiando: cp $K8sFile $K8sFileApp ..."
 
@@ -67,7 +68,8 @@ sed -i $paramSed $K8sFileAppService
 
 ########################################################################################################################
 
-DockerImageParam="192\.168\.6\.184\:5000\/ithappens\/$DockerImageName\:$DockerImageVersionLatest"
+#DockerImageParam="192\.168\.6\.184\:5000\/ithappens\/$DockerImageName\:$DockerImageVersionLatest"
+DockerImageParam="10\.121\.2\.211\:5001\/ithappens\/$DockerImageName\:$DockerImageVersionLatest"
 paramSed="s/\${DockerImage}/"$DockerImageParam"/g"
 
 echo $paramSed
@@ -133,6 +135,12 @@ sed -i $paramSed $K8sFileApp
 ########################################################################################################################
 
 paramSed="s/\${URL_TESTE}/"$URL_TESTE"/g"
+
+echo $paramSed
+
+sed -i $paramSed $K8sFileApp
+########################################################################################################################
+paramSed="s/\${REPLICAS}/"$REPLICAS"/g"
 
 echo $paramSed
 

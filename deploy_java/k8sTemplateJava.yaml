@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       app: ${AppName}
-  replicas: 1
+  replicas: ${REPLICAS}
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -50,4 +50,4 @@ spec:
       nodeSelector:
         kubernetes.io/hostname: k8s-node-97
       imagePullSecrets:
-        - name: registrypullsecret
+        - name: registrypullsecretbk

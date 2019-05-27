@@ -31,10 +31,12 @@ else
 	DockerImageVersionLatest=1
 fi
 
+## URL do registry de imagens docker da IT Happens
+ServiceRegistryURL='10.121.2.211:5001' # '192;168.6.184:5000'
 ## Nome da Image Docker para a release escolhida
 DockerImageName=java-$AppEnv-$AppName
 ## Última versão da imagem docker a ser disponibilizada para a aplicação e release selecionadas
-DockerImage=192.168.6.184:5000/ithappens/$DockerImageName:$DockerImageVersionLatest
+DockerImage=$ServiceRegistryURL/ithappens/$DockerImageName:$DockerImageVersionLatest
 ## Arquivo com o template para deploy java em k8s
 K8sFileTemplate=/usr/local/appjavaversion/k8sTemplateJava.yaml
 ## Arquivo com o template para deploy java em k8s
@@ -57,16 +59,16 @@ ScriptPrepareTemplateJava=/usr/local/appjavaversion/k8sPrepareTemplateJava.sh' '
 ScriptPrepareTemplateJava=$ScriptPrepareTemplateJava' '$AppName
 
 # PREPARE
-docker pull 192.168.6.184:5000/ithappens/$DockerImageNameLatest:latest
+docker pull $ServiceRegistryURL/ithappens/$DockerImageNameLatest:latest
 
 # obtem o UUID da imagem
-IdImage=$(docker images -q 192.168.6.184:5000/ithappens/$DockerImageNameLatest:latest)
+IdImage=$(docker images -q $ServiceRegistryURL/ithappens/$DockerImageNameLatest:latest)
 
 # cria uma tag nova para a versão latest
-docker tag $IdImage 192.168.6.184:5000/ithappens/$DockerImageName:$DockerImageVersionLatest
+docker tag $IdImage $ServiceRegistryURL/ithappens/$DockerImageName:$DockerImageVersionLatest
 
 # sobe para o repositório de imagens docker do mateus
-docker push 192.168.6.184:5000/ithappens/$DockerImageName:$DockerImageVersionLatest
+docker push $ServiceRegistryURL/ithappens/$DockerImageName:$DockerImageVersionLatest
 
 eval "$ScriptPrepareTemplateJava"
 
@@ -74,13 +76,13 @@ eval "$ScriptPrepareTemplateJava"
 
 declare -i DockerImageVersionNumber=$(($DockerImageVersion))
 
-if [ $DockerImageVersionNumber -eq 1 ]
-then
-    kubectl create -f $K8sFileApp --namespace=java-$AppEnv --record=true
-    kubectl create -f $K8sFileAppService --namespace=java-$AppEnv --record=true
-else
+#if [ $DockerImageVersionNumber -eq 1 ]
+#then
+    kubectl apply -f $K8sFileApp --namespace=java-$AppEnv --record=true
+    kubectl apply -f $K8sFileAppService --namespace=java-$AppEnv --record=true
+#else
 	kubectl set image -f $K8sFileApp $AppName-container=$DockerImage --namespace=java-$AppEnv --record=true
-fi
+#fi
 
 # verifica o status da aplicacao
 kubectl rollout status deployment/$AppName --namespace=java-$AppEnv
