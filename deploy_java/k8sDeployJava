@@ -76,13 +76,13 @@ eval "$ScriptPrepareTemplateJava"
 
 declare -i DockerImageVersionNumber=$(($DockerImageVersion))
 
-#if [ $DockerImageVersionNumber -eq 1 ]
-#then
+if [ $DockerImageVersionNumber -eq 1 ]
+then
     kubectl apply -f $K8sFileApp --namespace=java-$AppEnv --record=true
     kubectl apply -f $K8sFileAppService --namespace=java-$AppEnv --record=true
-#else
+else
 	kubectl set image -f $K8sFileApp $AppName-container=$DockerImage --namespace=java-$AppEnv --record=true
-#fi
+fi
 
 # verifica o status da aplicacao
 kubectl rollout status deployment/$AppName --namespace=java-$AppEnv
