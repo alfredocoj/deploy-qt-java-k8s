@@ -27,10 +27,15 @@ RUN apt-get -y update && apt-get -y install libdw-dev \
 #  mcedit iputils-ping
 
 RUN apt install -y libxcomposite-dev libxcursor1 libxi6 libgconf-2-4 libxtst6 libfontconfig default-dbus-session-bus libxrandr2 libasound2 libegl1-mesa
+RUN apt install -y libaio1 libqt5gui5 libqt5sql5 libqt5qml5
 #tar openssh-server openssh-client curl
 
 RUN unlink /etc/localtime
 RUN ln -s /usr/share/zoneinfo/America/Fortaleza /etc/localtime
+
+ENV LD_LIBRARY_PATH=/home/user/qtlibs/app:/home/user/qtlibs:/home/user/qtlibs/Qt5.9.6/oracle
+
+RUN echo "export LD_LIBRARY_PATH=/home/user/qtlibs/app:/home/user/qtlibs:/home/user/qtlibs/Qt5.9.6/oracle" >> /etc/bash.bashrc
 
 RUN useradd -G root user
 
