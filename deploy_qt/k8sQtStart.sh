@@ -51,8 +51,13 @@ fi
 
 # LENDO ARQUIVO DE CONFIGURACAO DA APLICAÇÃO
 DockerAppParam=`more $FileConfig | grep param | awk -F= '{print $2}'`
+if [[ "$DockerAppParam" == *"port"* ]]
+then
+    DockerAppPort=9094
+else
+    declare -i DockerAppPort=`more $FileConfig | grep port | awk -F= '{print $2}'`
+fi
 LastNameApp=`more $FileConfig | grep lastname | awk -F= '{print $2}'`
-declare -i DockerAppPort=`more $FileConfig | grep port | awk -F= '{print $2}'`
 DockerAppMaxCore=`more $FileConfig | grep cpus | awk -F= '{print $2}'`
 Node=`more $FileConfig | grep node | awk -F= '{print $2}'`
 declare -i NumReplicas=`more $FileConfig | grep replicas | awk -F= '{print $2}'`
