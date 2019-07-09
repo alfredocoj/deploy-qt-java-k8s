@@ -44,6 +44,7 @@ rm -f $DirAppLast/gmcore_db.ini
 rm -f $DirAppLast/app.ini
 cp $FileAppIni $DirAppLast/gmcore_db.ini
 cp $FileAppIni $DirAppLast/app.ini
+cp $FileAppIni $DirAppLast/$DockerAppName.ini
 cp -R $DirAppReleaseVersion/* $DirAppLast/
 
 cp /usr/local/appversion/dockerfileTemplateK8s $DirDocker/$DockerFile
