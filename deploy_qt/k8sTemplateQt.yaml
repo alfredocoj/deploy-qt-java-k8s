@@ -18,7 +18,8 @@ spec:
           args:
           - /bin/sh
           - -c
-          - touch /tmp/healthy; sleep 30; rm -rf /tmp/healthy; sleep 600
+          - touch /tmp/healthy; sleep 30;
+          #  rm -rf /tmp/healthy; sleep 600
           command: [ "/bin/bash", "-ce", "sh /home/user/k8sRun.sh" ]
           volumeMounts:
             - mountPath: /tmp/.X11-unix
@@ -38,16 +39,18 @@ spec:
               value: /tmp/runtime-developer
             - name: DockerAppParam
               value: ${DockerAppParam}
+            - name: LD_LIBRARY_PATH
+              value: /home/user/qtlibs/oracle:/home/user/qtlibs:/home/user/qtlibs/plugins:/home/user/qtlibs/plugins/sqldrivers:/home/user/app
           imagePullPolicy: Always
           ports:
             - containerPort: ${DockerAppPort}
-          readinessProbe:
-            exec:
-              command:
-              - cat
-              - /tmp/healthy
-            initialDelaySeconds: 60
-            periodSeconds: 5
+#          readinessProbe:
+#            exec:
+#              command:
+#              - cat
+#              - /tmp/healthy
+#            initialDelaySeconds: 60
+#            periodSeconds: 5
       terminationGracePeriodSeconds: 60
       nodeSelector:
         kubernetes.io/hostname: ${Node}
