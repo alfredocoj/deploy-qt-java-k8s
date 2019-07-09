@@ -1,0 +1,74 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: financeiro-secret
+  namespace: java-pro
+data:
+  tls.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUMwRENDQWJnQ0NRRDJ5RllER3h0cmtEQU5CZ2txaGtpRzl3MEJBUXNGQURBcU1TZ3dKZ1lEVlFRRERCOW0KYVc1aGJtTmxhWEp2ZDNNdVozSjFjRzl0WVhSbGRYTXVZMjl0TG1KeU1CNFhEVEU1TURVd056RTVNVFUxTWxvWApEVEl3TURVd05qRTVNVFUxTWxvd0tqRW9NQ1lHQTFVRUF3d2ZabWx1WVc1alpXbHliM2R6TG1keWRYQnZiV0YwClpYVnpMbU52YlM1aWNqQ0NBU0l3RFFZSktvWklodmNOQVFFQkJRQURnZ0VQQURDQ0FRb0NnZ0VCQUx5UEJwdkYKT3RKZkQ5cVdRMkJPZTZoMVZOdzdJaE5Vd1VHb1IyR1RJZVZZSUp2YUlwRFplTTU5RFpMNmozWE9VZHM4U0FxRQpkMnlTS1hiWGppeFEzYmhaVGZxVjhKbHQzTUd6OHAwdVBPRDFuVHZPamNqU3dud2Y4TDFNdEdHTysxT1UvamNPCkZFL0EzUTgvNkRXU1FDTkpNdFQ4S212RW8zMkJyWDVBMnU1dHN0ZHVjakpVVUJrZ1R2QUxFditpRjY3REtpREMKYUx2amF1N0FRMVlPMTZUTWZ6TitHN0o1U0FNOURrdW9BOUw0OG9hL3d5bkxNdmp4RjZ4dDVXWXRXVkdzRno2bApndmsyQ1FDZnBRQkI0Rmc4Nm9ldjhOQVc2eG9VYVhzbnFJZGNiTUlPUGpWNklLUlJPR3NmQkR0MlpVSG40VTRuCjc5WUFDVGNQODBvc0lXOENBd0VBQVRBTkJna3Foa2lHOXcwQkFRc0ZBQU9DQVFFQW1NRlQ5UWZ6RFhtYnBOTXAKTFdyQU5rSURqU1B2UnR2aGlESkhrQm9VcGtJaXNpbnB3VXhEU09NbEdOeW9VbU00ckltK1V3eGtkcFd0ZEpmTQprQjZWS3ltSG02Q3ZWc1JaYkIvU0Mzc1dwUG0yTDNmZ2wwZk0yNDlpR1hYMmVSakNmNWNvbXdWc0U4VEQrVFdVCk5hTkdIQVhyWWF5NXN4MmxEOUxkdXJnS2lsdTFWVXR2MEVMZDFvclhndHBleW02ck5tcm5yVGovK3NkTFZJREsKRnZ4V1BjOEluNW5qdTdiNWYrdGJUMHNBK3ExVzV2bW9wdEhRTmRBcGdlMGl3QkdHVFpYczExbDA3djRncG0wRQpUekZqdS9abngxK0IxVS9ES0dpNjM1dXRmaEw0M1RFcmYwY05TcTdnUThxbXBKWllXc0NmMEVHQ1JVM1RzaDdPClZvNDAxdz09Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+  tls.key: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFcEFJQkFBS0NBUUVBdkk4R204VTYwbDhQMnBaRFlFNTdxSFZVM0RzaUUxVEJRYWhIWVpNaDVWZ2dtOW9pCmtObDR6bjBOa3ZxUGRjNVIyenhJQ29SM2JKSXBkdGVPTEZEZHVGbE4rcFh3bVczY3diUHluUzQ4NFBXZE84Nk4KeU5MQ2ZCL3d2VXkwWVk3N1U1VCtOdzRVVDhEZER6L29OWkpBSTBreTFQd3FhOFNqZllHdGZrRGE3bTJ5MTI1eQpNbFJRR1NCTzhBc1MvNklYcnNNcUlNSm91K05xN3NCRFZnN1hwTXgvTTM0YnNubElBejBPUzZnRDB2anloci9ECktjc3krUEVYckczbFppMVpVYXdYUHFXQytUWUpBSitsQUVIZ1dEenFoNi93MEJickdoUnBleWVvaDF4c3dnNCsKTlhvZ3BGRTRheDhFTzNabFFlZmhUaWZ2MWdBSk53L3pTaXdoYndJREFRQUJBb0lCQVFDY0VIazB4bnFZRWt4Sgo3R0xadkR2SFEwMjRkazBPMlBDWGlsT0NaRWdDemYwM1ljV0lSQ2NrS1FicUp1NUVZRDhLQ1F2TGdMWmpxMW9jClhlN3pxUDdLalVmb1p0L2I3YjF3cWFMZUM1NGh4OGlhN3F3VmtyT2NEc2V2dG1QNTkyRDNYZk5HMkNWaG1VeWUKU1pQRmUwWVFybzRmRUpOLzNTSkFSK3V6K3JQNThHMStIRHNyZTJJdU5zbGZTWDQyL0V4U1hKTGpBZE1qejdYdAo4VjJjYzR2aitjYm11RXdtMmhHd2NjZmd2M1pMdE84djlWa2ZZUEd5aHNRcDVnUUcvZUdmL2RJMUNWT2pKL0FSCmpEWGtaVFhkb0JmWXBuQ211RHBzNmRtQkhmNmlRMGY2Q3h5akhOQkJRRXNFcFR4Vk9RaGN2RURKQ3Bid2F2QkEKWlFMNzNyclpBb0dCQVBkUENwYWJSNFdiMVpOOHhCVjdGTGYrQTRQMDRkY2dlRHB6NG1TbDBxOFV0czcrVjBSZQpmVXh4TWdhSlpmSmo4bzRwMktVR1pyVFZNYnRVYnFYUU4rbDJhbXl2YzRUaXpENmROME5GTVFuWi92Q05PbXVrCll3a3F4eU9yQmVmWmxJQXpGRFBORnFralhFQjZlbzZBb2x6a1RaalVpZUI1cXZiUFhKNndBc2VsQW9HQkFNTXYKYmNJS1BiRDdmdzM1cFp2MzFueWtOdEM5RXZlNFVTSmNYMkUrc1VRK3RtNHhqeXFWaUU0Y3RzcFdNdUExWHRUUQpwRENvcThhWFdyRENJMGx2Y3JIQlo5c0Q0ZW5kN3FjbzN0UnIxWkxtdENvdUNyaWN6NU52UXF1MURiOXpWdm5NCnhnSjM3K3JnVyt4Vytwcm1BQ050cVFVSUwrYjAvRGJ6aXZqamZwaURBb0dCQU81c0IxczNESGJreTd6SzFnZVgKaDF2eXlkVFhxenJKRk4vVmhQZGZYb1JvUmUyOUNzamhCNDlBdWVmUFlyZVNYKzlxckhBOGdadm94VzlDY1FIdQpnVmpVVHJuRlZHdFNjM0lTQTRzWkU3UFp0SXlZdXkrM1pic2F3SzNFWFljdUhwcVJvL0prMEduenF5YUdiYzBnCmVtZHZ1dGVTWC9KSG1la2o5TGtRR3ozNUFvR0FKZHpJZE5DWndRQTRXRlNxTElRNkpqbVFySk5RMzU3d2xqTEgKQ2Mwb2crMktZL3ZYSXRLWSsxWVVtMUYzVXdqbldXOFR1cUN0bWJ0NGl6dE5yd3dnZXB6aThaaGlOWVNvcStLQQp2MElmenZ4VHpLN2J3NDRmc2lEdUZQTHROTXRCL3ZrYkhCVjZBOXo3MSsvVGMwTFVtZ3JHczhRdnpxU05YSGVICjZObndqOU1DZ1lBdTYrVzlPUDMwN2hRLzJFbVZmYVhzUEUrQ09KQXlCSldjK3N1VkxDNnp1MG5xYVVleml3djMKMnVxOHQ2MjRGdzVuZ1FuL3Z0bk1IZHpuQ1B3YVh0NWVwYTFDV3pIVWV2cmFLc21nRk1CVDRWZEgraXBQaElZdAo5UThTWGFlSGx4WGliR25kclFnWmhJcWFwcWFXUk9NNkMyNjFnMDZTMmdyRUJHWUNST0IxVmc9PQotLS0tLUVORCBSU0EgUFJJVkFURSBLRVktLS0tLQo=
+type: Opaque
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: financeiro-ws-ingress
+  namespace: java-pro
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+spec:
+  tls:
+    - hosts:
+        - financeirows.grupomateus.com.br
+      secretName: financeiro-secret
+  rules:
+    - host: financeirows.grupomateus.com.br
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: financeiro-ws-service
+              servicePort: 443
+---
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: traefik-web-ui
+  namespace: java-pro
+  annotations:
+    kubernetes.io/ingress.class: traefik
+spec:
+  rules:
+    - host: financeirows.grupomateus.com.br
+      http:
+        paths:
+          - backend:
+              serviceName: financeiro-ws-service
+              servicePort: 8080
+  tls:
+    - secretName: traefik-ui-tls-cert
+
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: financeirows-ingress
+  namespace: java-pro
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+spec:
+  tls:
+    - secretName: traefik-ui-tls-cert
+  rules:
+  - host:
+    http:
+      paths:
+        - path: /wsfinanceiro
+          backend:
+            serviceName: financeiro-ws-service
+            servicePort: 8080
