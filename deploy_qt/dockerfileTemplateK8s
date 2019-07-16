@@ -33,7 +33,7 @@ RUN apt install -y libaio1 libqt5gui5 libqt5sql5 libqt5qml5
 RUN unlink /etc/localtime
 RUN ln -s /usr/share/zoneinfo/America/Fortaleza /etc/localtime
 
-ENV LD_LIBRARY_PATH=/home/user/qtlibs/app:/home/user/qtlibs:/home/user/qtlibs/Qt5.9.6/oracle
+ENV LD_LIBRARY_PATH=/home/user/qtlibs/app:/home/user/qtlibs:/home/user/qtlibs/oracle
 
 RUN echo "export LD_LIBRARY_PATH=/home/user/qtlibs/app:/home/user/qtlibs:/home/user/qtlibs/Qt5.9.6/oracle" >> /etc/bash.bashrc
 
