@@ -1,12 +1,12 @@
-## Build e Deploy de projetos QT e Java
+## Build and Deploy QT and Java Projects
 
-As instruções para utilização dos scripts podem ser encontradas nos diretórios:
+Instructions for using the scripts can be found in the directories:
 
 - `deploy_qt/README.md`
 - `deploy_java/README.md`
 
 
-Colaboradores:
+Contributors:
 
 [Alfredo Oliveira](http://git.mateus/alfredo.junior)
 
