@@ -1,0 +1,117 @@
+#!/bin/bash
+
+BINARYEnv=$1
+BINARYApp=$2
+LastName=$3
+extraParam=$4
+## verifica se terceiro parametro é igual a "restart".
+if [ "$3" == "restart" ];
+then
+    LastName=""
+    extraParam=$3
+fi
+
+ConfigName=$LastName
+
+NameDirAppComplete=$BINARYApp$LastName
+AppVersionDir="/usr/local/appversion/release"
+FileLastVersionDocker=$AppVersionDir/$BINARYEnv/$NameDirAppComplete/lastversiondocker.txt
+
+if [ -f $FileLastVersionDocker ]
+then
+    DockerImageVersionLatest=$(cat $AppVersionDir/$BINARYEnv/$NameDirAppComplete/lastversiondocker.txt)
+fi
+
+if [ "$BINARYEnv" == "pro" ]; then
+	AppVersionDirEnv=$AppVersionDir/pro
+elif [ "$BINARYEnv" == "PRO" ]; then
+	AppVersionDirEnv=$AppVersionDir/pro
+elif [ "$BINARYEnv" == "hom" ]; then
+	AppVersionDirEnv=$AppVersionDir/hom
+elif [ "$BINARYEnv" == "HOM" ]; then
+	AppVersionDirEnv=$AppVersionDir/hom
+elif [ "$BINARYEnv" == "dev" ]; then
+	AppVersionDirEnv=$AppVersionDir/dev
+elif [ "$BINARYEnv" == "DEV" ]; then
+	AppVersionDirEnv=$AppVersionDir/dev
+else
+	printf 'Erro: ambiente não reconhecido, escolha pro(produção), hom(homologação), dev(desenvolvimento) \n\r \n\r';
+	exit 2;
+fi
+
+#rm -rf $AppVersionDir;
+
+AppVersionDirApp=$AppVersionDirEnv/$NameDirAppComplete
+AppVersionDirAppZip=$AppVersionDirEnv/$NameDirAppComplete.zip
+AppVersionDirAppHash='' # `echo -e "$(date +"%Y%m%d_%H%M%S")" | md5sum | cut -d"-" -f1 -`
+AppRev=$(date +"%Y%m%d_%H%M%S")$AppVersionDirAppHash
+AppVersionDirAppRev=$AppVersionDirApp/$AppRev
+AppVersionDirAppIni=$AppVersionDirApp/app.ini
+AppVersionDirAppRevBinary=$AppVersionDirAppRev/$BINARYApp
+
+rm -rf $AppVersionDirAppRev;
+mkdir -p $AppVersionDirAppRev;
+unzip -j -o $AppVersionDirAppZip -d $AppVersionDirAppRev
+
+mv $AppVersionDirAppRevBinary $AppVersionDirAppRev/app
+AppVersionDirAppRevBinary=$AppVersionDirAppRev/app
+chmod +x $AppVersionDirAppRevBinary
+
+cd $AppVersionDirAppRev;
+for FILENAME in $(find . -iname '*.so')
+do
+	FILENAME=$(basename $FILENAME)
+
+	LINKNAME=$(basename $FILENAME)".1"
+	ln -s $FILENAME $LINKNAME;
+
+	LINKNAME=$(basename $FILENAME)".1.0"
+	ln -s $FILENAME $LINKNAME;
+
+	LINKNAME=$(basename $FILENAME)".1.0.0"
+	ln -s $FILENAME $LINKNAME;
+done
+
+if [ -f ../lastversion.txt ]
+then
+    #ln -s ../app.ini app.ini
+	cp ../lastversion.txt ./appOldVerion.txt
+fi
+
+# se file lastversiondocker não existe para a aplicação, então é criado e setado valor 1
+if [ -f $FileLastVersionDocker ]
+then
+    echo "Arquivo com o número da última versão docker em release já existe";
+
+    if [ "$extraParam" == "restart" ];
+    then
+        touch $FileLastVersionDocker
+	    echo -e "0" > $FileLastVersionDocker
+	    DockerImageVersionLatest=0
+    fi
+else
+    touch $FileLastVersionDocker
+	echo -e "0" > $FileLastVersionDocker
+	DockerImageVersionLatest=0
+fi
+
+cd ..;
+echo -e "$AppRev" > lastversion.txt
+
+
+cd /usr/local/appversion/
+
+echo "Construindo imagem docker"
+BINARYK8sPrepare='./k8sPrepare.sh '$BINARYEnv
+BINARYK8sPrepare=$BINARYK8sPrepare' '$BINARYApp
+BINARYK8sPrepare=$BINARYK8sPrepare' '$LastName
+echo "$BINARYK8sPrepare"
+eval "$BINARYK8sPrepare"
+
+echo "Iniciando container em kubernetes ..."
+BINARYK8sQtStart='./k8sQt593start.sh '$BINARYEnv
+BINARYK8sQtStart=$BINARYK8sQtStart' '$BINARYApp
+BINARYK8sQtStart=$BINARYK8sQtStart' '$ConfigName
+#BINARYK8sQtStart=$BINARYK8sQtStart' '$DockerAppPort
+echo "$BINARYK8sQtStart"
+eval "$BINARYK8sQtStart"
