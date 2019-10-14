@@ -53,7 +53,8 @@ spec:
 #            periodSeconds: 5
       terminationGracePeriodSeconds: 60
       nodeSelector:
-        kubernetes.io/hostname: ${Node}
+        #kubernetes.io/hostname: ${Node}
+        general: "true"
       imagePullSecrets:
         - name: registrypullsecret
       volumes:
