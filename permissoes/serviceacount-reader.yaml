@@ -13,3 +13,7 @@ metadata:
 # kubectl create rolebinding reader-user-java-hom -n java-hom --clusterrole=view --serviceaccount=java-hom:reader-user-java-hom
 # kubectl get secret $(kubectl get serviceaccount reader-user-java-hom -n java-hom -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" -n java-hom | base64 --decode
 
+
+# kubectl create serviceaccount readengineeringjava-hom -n engineering
+# kubectl create rolebinding reader-user-engineering -n engineering --clusterrole=view --serviceaccount=engineering:reader-user-engineering
+# kubectl get secret $(kubectl get serviceaccount reader-user-engineering -n engineering -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" -n engineering | base64 --decode
