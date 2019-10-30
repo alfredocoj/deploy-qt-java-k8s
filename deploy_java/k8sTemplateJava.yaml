@@ -21,6 +21,8 @@ spec:
         - name: ${AppName}-container
           image: ${DockerImage}
           resources:
+            requests:
+              cpu: 0.5
             limits:
               cpu: ${DockerAppMaxCore}
           env:
