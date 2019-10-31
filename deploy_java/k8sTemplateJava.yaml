@@ -45,10 +45,10 @@ spec:
             httpGet:
               path: ${URL_TESTE}
               port: ${DockerAppPort}
-            initialDelaySeconds: 80
+            initialDelaySeconds: 90
             periodSeconds: 5
             successThreshold: 1
-      terminationGracePeriodSeconds: 140
+      terminationGracePeriodSeconds: 30
       nodeSelector:
         general: "true"
       imagePullSecrets:
