@@ -34,8 +34,10 @@ FileOldVersionDocker=$DockerAppDir/$DockerAppVersion/appOldVersionDocker.txt
 ## Nome para imagem docker (auxiliar)
 ImageNameDocker=${DockerAppName,,}
 DockerImageName="qt-"$DockerAppEnv"-"$ImageNameDocker
+## IP/DNS do Docker Registry
+DockerRegistry="10.54.0.214:5001"
 ## Última versão da imagem docker a ser disponibilizada para a aplicação e release selecionadas
-DockerImage=192.168.6.184:5000/ithappens/$DockerImageName:$DockerImageVersionLatest
+DockerImage=$DockerRegistry/ithappens/$DockerImageName:$DockerImageVersionLatest
 
 mkdir -p $DirDocker
 mkdir -p $DirAppLast
@@ -59,9 +61,9 @@ docker build . -t qt-$ImageNameDocker #--build-arg DIR_APP_RELEASE="$DirAppRelea
 
 IdImage=$(docker images -q qt-$ImageNameDocker)
 
-docker tag $IdImage 192.168.6.184:5000/ithappens/$DockerImageName:$DockerImageVersionLatest
+docker tag $IdImage $DockerRegistry/ithappens/$DockerImageName:$DockerImageVersionLatest
 
-docker push 192.168.6.184:5000/ithappens/$DockerImageName:$DockerImageVersionLatest
+docker push $DockerRegistry/ithappens/$DockerImageName:$DockerImageVersionLatest
 
 #rm -rf $DirDocker/$DockerFile
 #rm -rf $DirDocker/$k8sRun

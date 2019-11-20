@@ -68,9 +68,9 @@ ImageNameDocker=${DockerAppName,,}
 K8sAppName=${DockerAppName,,}-${LastNameApp,,}
 DockerImageName="qt-$DockerAppEnvi-$ImageNameDocker"
 ## Imagem docker para a última versao da aplicação
-DockerImage=192.168.6.184:5000/ithappens/$DockerImageName:$DockerImageVersion
+DockerImage=10.54.0.214:5001/ithappens/$DockerImageName:$DockerImageVersion
 ## Imagem docker base para a última versao da aplicação
-DockerImageBase=192.168.6.184:5000/ithappens/$DockerImageName
+DockerImageBase=10.54.0.214:5001/ithappens/$DockerImageName
 ## Nome do container
 containerName=$ImageNameDocker-container
 
@@ -182,7 +182,7 @@ sed -i $paramSed $K8sFileApp
 
 ### setando parametro refetente a imagem da aplicação
 
-DockerImageParam="192\.168\.6\.184\:5000\/ithappens\/$DockerImageName\:$DockerImageVersion"
+DockerImageParam="10\.54\.0\.214\:5000\/ithappens\/$DockerImageName\:$DockerImageVersion"
 paramSed="s/\${DockerImage}/"$DockerImageParam"/g"
 
 echo $paramSed
