@@ -32,7 +32,7 @@ else
 fi
 
 ## URL do registry de imagens docker da IT Happens
-ServiceRegistryURL='10.121.2.211:5001' # '192;168.6.184:5000'
+ServiceRegistryURL='10.54.0.214:5001' # '192;168.6.184:5000'
 ## Nome da Image Docker para a release escolhida
 DockerImageName=java-$AppEnv-$AppName
 ## Última versão da imagem docker a ser disponibilizada para a aplicação e release selecionadas

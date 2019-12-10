@@ -20,7 +20,7 @@ K8sFileAppService=$AppDir/$DockerImageVersionLatest/$AppName-service.yaml
 DockerImageName=java-$AppEnv-$AppName
 ## Imagem docker para a última versao da aplicação
 #DockerImage=192.168.6.184:5000/ithappens/$DockerImageName:$DockerImageVersionLatest
-DockerImage=10.121.2.211:5001/ithappens/$DockerImageName:$DockerImageVersionLatest
+DockerImage=10.54.0.214:5001/ithappens/$DockerImageName:$DockerImageVersionLatest
 
 # LENDO ARQUIVO DE CONFIGURACAO
 declare -i DockerAppPort=`more $FileConfig | grep SERVER_PORT | awk -F= '{print $2}'`
@@ -69,7 +69,7 @@ sed -i $paramSed $K8sFileAppService
 ########################################################################################################################
 
 #DockerImageParam="192\.168\.6\.184\:5000\/ithappens\/$DockerImageName\:$DockerImageVersionLatest"
-DockerImageParam="10\.121\.2\.211\:5001\/ithappens\/$DockerImageName\:$DockerImageVersionLatest"
+DockerImageParam="10\.54\.0\.214\:5001\/ithappens\/$DockerImageName\:$DockerImageVersionLatest"
 paramSed="s/\${DockerImage}/"$DockerImageParam"/g"
 
 echo $paramSed
