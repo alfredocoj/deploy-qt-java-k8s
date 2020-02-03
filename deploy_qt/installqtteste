@@ -83,6 +83,13 @@ if [ -f $FileLastVersionDocker ]
 then
     echo "Arquivo com o número da última versão docker em release já existe";
 
+    if [ "$DockerImageVersionLatest" -gt "9" ];
+    then
+        touch $FileLastVersionDocker
+	    echo -e "1" > $FileLastVersionDocker
+	    DockerImageVersionLatest=1
+    fi
+    
     if [ "$extraParam" == "restart" ];
     then
         touch $FileLastVersionDocker
