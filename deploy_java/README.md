@@ -8,7 +8,7 @@ Para enviar os scripts de configuração para o servidor, execute:
 
 Exemplo:
 ```
-./k8sJavaScp 192.168.6.95 k8s-admin
+./k8sJavaScp 10.0.0.95 k8s-admin
 ```
 
 Explicando os arquivos:
