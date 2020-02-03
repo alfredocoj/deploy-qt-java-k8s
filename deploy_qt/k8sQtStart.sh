@@ -59,9 +59,10 @@ else
 fi
 LastNameApp=`more $FileConfig | grep lastname | awk -F= '{print $2}'`
 DockerAppMaxCore=`more $FileConfig | grep cpus | awk -F= '{print $2}'`
+DockerAppMaxMemory=`more $FileConfig | grep memory | awk -F= '{print $2}'`
 Node=`more $FileConfig | grep node | awk -F= '{print $2}'`
 declare -i NumReplicas=`more $FileConfig | grep replicas | awk -F= '{print $2}'`
-declare -i DockerAppHostPort=300${DockerAppPort: -2}
+declare -i DockerAppHostPort=316${DockerAppPort: -2}
 
 ## Nome da Image Docker para a release escolhida
 ImageNameDocker=${DockerAppName,,}
@@ -83,6 +84,7 @@ rm -rf $DockerAppLibs/*.ini;
 
 echo "docker starting";
 echo "docker CPU : " $DockerAppMaxCore
+echo "docker memory : " $DockerAppMaxMemory
 
 if [ "$DockerAppMaxCore" -eq "0" ]
 then
@@ -112,6 +114,16 @@ sed -i $paramSed $K8sFileAppService
 ### setando parametro refetente ao número de cores para a aplicação
 
 paramSed="s/\${DockerAppMaxCore}/"$DockerAppMaxCore"/g"
+
+echo $paramSed
+
+sed -i $paramSed $K8sFileApp
+
+########################################################################################################################
+
+### setando parametro refetente a quantidade de memória para a aplicação
+
+paramSed="s/\${DockerAppMaxMemory}/"$DockerAppMaxMemory"/g"
 
 echo $paramSed
 
@@ -199,8 +211,9 @@ if [ $DockerImageVersionNumber -eq 1 ]
 then
     echo "Version Docker: $DockerImageVersionNumber"
     kubectl create -f $K8sFileApp --namespace=qt-$DockerAppEnvi --record=true
-    kubectl create -f $K8sFileAppService --namespace=qt-$DockerAppEnvi --record=true
+    #kubectl create -f $K8sFileAppService --namespace=qt-$DockerAppEnvi --record=true
 else
+	kubectl apply -f $K8sFileApp --namespace=qt-$DockerAppEnvi
 	kubectl set image -f $K8sFileApp $K8sAppName-container=$DockerImage --namespace=qt-$DockerAppEnvi --record=true
 fi
 
