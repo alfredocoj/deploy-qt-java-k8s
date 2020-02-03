@@ -53,7 +53,6 @@ done
 
 BINARYSERVER=192.168.6.95
 BINARYSERVERUSER=k8s-admin
-BINARYSERVERPASS=123456
 BINARYBuildDir=/home/$(whoami)/build/docker
 BINARYBuildDirAPP=$BINARYBuildDir/$BINARYApp$LastName
 BINARYBuildDirAPPZip=$BINARYBuildDir/$BINARYApp$LastName.zip
